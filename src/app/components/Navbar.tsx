@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useDarkMode } from '../hooks/useDarkMode';
 import MoonIcon from './MoonIcon';
 import NavLink from './NavLink';
@@ -8,8 +9,12 @@ import NavLink from './NavLink';
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { toggleDarkMode } = useDarkMode();
+  const pathname = usePathname();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    if (pathname !== '/') {
+      return;
+    }
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
@@ -34,26 +39,36 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <a 
-              href="#home" 
-              onClick={(e) => handleScroll(e, 'home')}
-              className="text-xl font-bold text-black dark:text-zinc-50 cursor-pointer"
+            <a
+              href="/"
+              onClick={(e) => handleScroll(e, "home")}
+              className="inline-flex cursor-pointer items-center"
+              aria-label="Moon Seven home"
             >
-              Moon Seven
+              <img
+                src="/crescent-moon.svg"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 object-contain moon-bg"
+              />
             </a>
           </div>
           
           {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center md:space-x-4">
             <div className="ml-10 flex items-baseline space-x-8">
-              <NavLink href="#home" onClick={(e) => handleScroll(e, 'home')} className="px-3 py-2 text-sm font-medium">
+              <NavLink href="/#home" onClick={(e) => handleScroll(e, 'home')} className="px-3 py-2 text-sm font-medium">
                 Home
               </NavLink>
-              <NavLink href="#about" onClick={(e) => handleScroll(e, 'about')} className="px-3 py-2 text-sm font-medium">
+              <NavLink href="/#about" onClick={(e) => handleScroll(e, 'about')} className="px-3 py-2 text-sm font-medium">
                 About
               </NavLink>
-              <NavLink href="#contact" onClick={(e) => handleScroll(e, 'contact')} className="px-3 py-2 text-sm font-medium">
+              <NavLink href="/#contact" onClick={(e) => handleScroll(e, 'contact')} className="px-3 py-2 text-sm font-medium">
                 Contact
+              </NavLink>
+              <NavLink href="/tools" onClick={() => {}} className="px-3 py-2 text-sm font-medium">
+                Tools
               </NavLink>
             </div>
             {/* Dark Mode Toggle */}
@@ -112,19 +127,24 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div 
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          isMenuOpen ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-black border-t border-zinc-200 dark:border-zinc-800">
           {[
-            { href: '#home', label: 'Home', delay: '0.1s' },
-            { href: '#about', label: 'About', delay: '0.15s' },
-            { href: '#contact', label: 'Contact', delay: '0.2s' },
-          ].map((item, index) => (
+            { href: '/#home', label: 'Home', delay: '0.1s', scrollId: 'home' as const },
+            { href: '/#about', label: 'About', delay: '0.15s', scrollId: 'about' as const },
+            { href: '/#contact', label: 'Contact', delay: '0.2s', scrollId: 'contact' as const },
+            { href: '/tools', label: 'Tools', delay: '0.25s', scrollId: null },
+          ].map((item) => (
             <NavLink
               key={item.href}
               href={item.href}
-              onClick={(e) => handleScroll(e, item.href.slice(1))}
+              onClick={(e) =>
+                item.scrollId
+                  ? handleScroll(e, item.scrollId)
+                  : setIsMenuOpen(false)
+              }
               className={`block px-3 py-2 text-base font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-all duration-200 ${
                 isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
               }`}
