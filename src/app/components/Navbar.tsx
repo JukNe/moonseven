@@ -18,14 +18,8 @@ export default function Navbar() {
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
-      const offset = 80; // Account for fixed navbar height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const top = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top, behavior: "smooth" });
       setIsMenuOpen(false); // Close mobile menu after clicking
     }
   };
@@ -46,7 +40,7 @@ export default function Navbar() {
               aria-label="Moon Seven home"
             >
               <img
-                src="/crescent-moon.svg"
+                src="/Moon-Seven-Logo_nws.png"
                 alt=""
                 width={36}
                 height={36}

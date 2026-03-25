@@ -102,16 +102,9 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Full-page section scroll snap (home only; see ScrollSnapScope) — similar to full-viewport marketing sites */
-html.snap-scroll-page {
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: 5rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.snap-scroll-page {
-    scroll-snap-type: none;
-  }
+/* Home page: smooth wheel/nav jumps; section tops align to viewport (padding inside Section clears navbar). */
+html.home-smooth-sections {
+  scroll-behavior: smooth;
 }
 
 /* Darken moon in light mode */

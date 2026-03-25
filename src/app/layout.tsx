@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Lunasima } from "next/font/google";
-import ScrollSnapScope from "./components/ScrollSnapScope";
+import SmoothSectionScroll from "./components/SmoothSectionScroll";
 import "./globals.css";
 
 const lunasima = Lunasima({
@@ -49,7 +49,7 @@ export default function RootLayout({
       <body
         className={`${lunasima.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <ScrollSnapScope />
+        <SmoothSectionScroll />
         {children}
       </body>
     </html>
