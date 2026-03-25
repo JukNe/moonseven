@@ -9,7 +9,6 @@ export default function ContactSection() {
       <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
         Get in touch with us. We'd love to hear from you!
       </p>
-      //TODO add contact form
       <div className="space-y-4">
         <p className="text-lg text-zinc-700 dark:text-zinc-300">
           Email: contact@moonseven.fi
