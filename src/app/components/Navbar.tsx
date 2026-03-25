@@ -64,11 +64,11 @@ export default function Navbar() {
               <NavLink href="/#about" onClick={(e) => handleScroll(e, 'about')} className="px-3 py-2 text-sm font-medium">
                 About
               </NavLink>
+              <NavLink href="/#tools" onClick={(e) => handleScroll(e, 'tools')} className="px-3 py-2 text-sm font-medium">
+                Tools
+              </NavLink>
               <NavLink href="/#contact" onClick={(e) => handleScroll(e, 'contact')} className="px-3 py-2 text-sm font-medium">
                 Contact
-              </NavLink>
-              <NavLink href="/tools" onClick={() => {}} className="px-3 py-2 text-sm font-medium">
-                Tools
               </NavLink>
             </div>
             {/* Dark Mode Toggle */}
@@ -134,17 +134,13 @@ export default function Navbar() {
           {[
             { href: '/#home', label: 'Home', delay: '0.1s', scrollId: 'home' as const },
             { href: '/#about', label: 'About', delay: '0.15s', scrollId: 'about' as const },
-            { href: '/#contact', label: 'Contact', delay: '0.2s', scrollId: 'contact' as const },
-            { href: '/tools', label: 'Tools', delay: '0.25s', scrollId: null },
+            { href: '/#tools', label: 'Tools', delay: '0.2s', scrollId: 'tools' as const },
+            { href: '/#contact', label: 'Contact', delay: '0.25s', scrollId: 'contact' as const },
           ].map((item) => (
             <NavLink
               key={item.href}
               href={item.href}
-              onClick={(e) =>
-                item.scrollId
-                  ? handleScroll(e, item.scrollId)
-                  : setIsMenuOpen(false)
-              }
+              onClick={(e) => handleScroll(e, item.scrollId)}
               className={`block px-3 py-2 text-base font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-all duration-200 ${
                 isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
               }`}
