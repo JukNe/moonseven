@@ -14,9 +14,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/** Production URL — used to turn relative image paths into absolute og:image URLs. */
+const siteUrl = "https://moonseven.gg";
+
 export const metadata: Metadata = {
-  title: "Moon Seven",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Moon Seven",
+    template: "%s · Moon Seven",
+  },
   description: "Coming soon... 🌒",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Moon Seven",
+    title: "Moon Seven",
+    description: "Coming soon... 🌒",
+    images: [
+      {
+        url: "/Moon-Seven-Logo_nws.png",
+        alt: "Moon Seven",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Moon Seven",
+    description: "Coming soon... 🌒",
+    images: ["/Moon-Seven-Logo_nws.png"],
+  },
 };
 
 export default function RootLayout({
