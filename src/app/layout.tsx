@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Lunasima } from "next/font/google";
 import ScrollSnapScope from "./components/ScrollSnapScope";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const lunasima = Lunasima({
+  variable: "--font-lunasima",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -46,7 +47,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${lunasima.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <ScrollSnapScope />
         {children}

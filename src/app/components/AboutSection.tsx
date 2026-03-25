@@ -11,7 +11,7 @@ export default function AboutSection() {
       </RevealOnScroll>
       <RevealOnScroll delayMs={100}>
         <p className="text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-xl">
-          Welcome to Moon Seven.
+        Coming soon... 🌒
         </p>
       </RevealOnScroll>
     </Section>
