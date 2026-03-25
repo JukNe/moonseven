@@ -24,7 +24,7 @@ export default function ToolsSection() {
                 className="group block rounded-lg border border-zinc-200 bg-zinc-50 p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/50"
               >
                 <h3 className="text-lg font-semibold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-50 dark:group-hover:text-indigo-400">
-                  Steam review fetcher
+                  Steam Review Fetcher
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                   Download Steam store reviews for an app via the Get Reviews
