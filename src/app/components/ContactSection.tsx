@@ -1,3 +1,4 @@
+import RevealOnScroll from "./RevealOnScroll";
 import Section from "./Section";
 
 /** Replace `href` values with your real profile URLs. */
@@ -29,45 +30,82 @@ const SOCIAL_LINKS = [
       </svg>
     ),
   },
+  {
+    name: "YouTube",
+    href: "https://www.youtube.com/@moonsevengg",
+    icon: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      </svg>
+    ),
+  },
+  {
+    name: "Bluesky",
+    href: "https://bsky.app/profile/moonseven.gg",
+    icon: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+        <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.011 0 3.747c0 4.112 4.087 5.119 4.93 14.983 1.234 1.328 1.58 1.62 3.57 1.62 1.9 0 2.35-.292 3.58-1.62C13.93 8.866 18.017 7.859 18.017 3.747c0-.736-.139-1.839-.902-2.182-.659-.299-1.664-.621-4.3 1.765-2.752 1.942-5.711 5.881-6.815 7.995z" />
+      </svg>
+    ),
+  },
+  {
+    name: "TikTok",
+    href: "https://www.tiktok.com/@moonsevengg",
+    icon: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+      </svg>
+    ),
+  },
 ] as const;
 
 export default function ContactSection() {
   return (
     <Section id="contact" className="bg-zinc-100 dark:bg-zinc-900">
-      <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-zinc-50 mb-6">
-        Contact
-      </h2>
-      <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
-        Get in touch with us. We'd love to hear from you!
-      </p>
-      <div className="space-y-4">
-        <p className="text-lg text-zinc-700 dark:text-zinc-300">
-          Email:{" "}
-          <a
-            href="mailto:contact@moonseven.gg"
-            className="text-indigo-600 underline decoration-indigo-600/30 underline-offset-2 transition hover:text-indigo-500 dark:text-indigo-400 dark:decoration-indigo-400/30 dark:hover:text-indigo-300"
-          >
-            contact@moonseven.gg
-          </a>
+      <RevealOnScroll>
+        <h2 className="mb-6 text-4xl font-bold text-black dark:text-zinc-50 md:text-5xl">
+          Contact
+        </h2>
+      </RevealOnScroll>
+      <RevealOnScroll delayMs={90}>
+        <p className="mb-8 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-xl">
+          Get in touch with us. We'd love to hear from you!
         </p>
-      </div>
+      </RevealOnScroll>
+      <RevealOnScroll delayMs={140}>
+        <div className="space-y-4">
+          <p className="text-lg text-zinc-700 dark:text-zinc-300">
+            Email:{" "}
+            <a
+              href="mailto:contact@moonseven.gg"
+              className="text-indigo-600 underline decoration-indigo-600/30 underline-offset-2 transition hover:text-indigo-500 dark:text-indigo-400 dark:decoration-indigo-400/30 dark:hover:text-indigo-300"
+            >
+              contact@moonseven.gg
+            </a>
+          </p>
+        </div>
+      </RevealOnScroll>
 
       <div className="mt-10 border-t border-zinc-200 pt-8 text-center dark:border-zinc-700">
-        <p className="mb-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
-          Social
-        </p>
+        <RevealOnScroll delayMs={80}>
+          <p className="mb-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            Social
+          </p>
+        </RevealOnScroll>
         <ul className="flex flex-wrap justify-center gap-3">
-          {SOCIAL_LINKS.map((item) => (
+          {SOCIAL_LINKS.map((item, index) => (
             <li key={item.name}>
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-300 bg-white text-zinc-700 transition hover:border-indigo-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-100 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400 dark:focus:ring-offset-zinc-900"
-                aria-label={item.name}
-              >
-                {item.icon}
-              </a>
+              <RevealOnScroll delayMs={index * 55}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-300 bg-white text-zinc-700 transition hover:border-indigo-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-100 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400 dark:focus:ring-offset-zinc-900"
+                  aria-label={item.name}
+                >
+                  {item.icon}
+                </a>
+              </RevealOnScroll>
             </li>
           ))}
         </ul>

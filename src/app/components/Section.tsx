@@ -9,7 +9,7 @@ export default function Section({ id, children, className = "", style }: Section
   return (
     <section 
       id={id}
-      className={`min-h-screen flex items-center justify-center py-20 px-8 ${className}`}
+      className={`min-h-screen snap-start snap-always flex items-center justify-center py-20 px-8 ${className}`}
       style={style}
     >
       <div className="max-w-4xl mx-auto text-center">
