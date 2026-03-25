@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Coming Soon",
-  description: "We're working on something exciting. Stay tuned!",
+  title: "Moon Seven",
+  description: "Coming soon... 🌒",
 };
 
 export default function RootLayout({

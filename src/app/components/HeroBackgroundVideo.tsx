@@ -34,7 +34,7 @@ export default function HeroBackgroundVideo() {
       onError={onVideoError}
       aria-hidden
     >
-      <source src="/background-video.mp4" type="video/mp4" />
+      <source src="/background-video.webm" type="video/webm" />
     </video>
   );
 }
