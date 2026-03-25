@@ -1,4 +1,4 @@
-import RevealOnScroll from "./RevealOnScroll";
+import HeroBackgroundVideo from "./HeroBackgroundVideo";
 import Section from "./Section";
 
 export default function HeroSection() {
@@ -7,17 +7,7 @@ export default function HeroSection() {
       id="home"
       className="relative h-screen flex items-center justify-center overflow-hidden pt-16"
     >
-      <video
-        className="pointer-events-none absolute inset-0 z-0 h-full w-full scale-[1.02] object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden
-      >
-        <source src="/background-video.mp4" type="video/mp4" />
-      </video>
+      <HeroBackgroundVideo />
     </Section>
   );
 }
