@@ -43,8 +43,8 @@ export default function ToolsPage() {
                   Steam Store Price
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  Fetch merged storefront prices across regions and download CSV
-                  (app ID, currency, and Steam minor-unit prices).
+                  Fetch one storefront price per Steam currency and download CSV
+                  or JSON.
                 </p>
                 <span className="mt-4 inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400">
                   Open tool

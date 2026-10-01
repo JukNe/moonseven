@@ -62,6 +62,15 @@ function unwrapAppDetails(
   return { ok: true, data: entry.data ?? null };
 }
 
+function asFiniteNumber(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim() !== "") {
+    const n = Number(value);
+    if (Number.isFinite(n)) return n;
+  }
+  return null;
+}
+
 function parsePriceOverview(data: unknown): {
   currency: string;
   initial: number;
@@ -74,12 +83,16 @@ function parsePriceOverview(data: unknown): {
   if (typeof po !== "object" || po === null) return null;
   const p = po as Record<string, unknown>;
   const currency = p.currency;
-  if (typeof currency !== "string") return null;
+  if (typeof currency !== "string" || currency.length === 0) return null;
+  const initial = asFiniteNumber(p.initial ?? 0);
+  const final = asFiniteNumber(p.final ?? 0);
+  const discount = asFiniteNumber(p.discount_percent ?? 0);
+  if (initial === null || final === null || discount === null) return null;
   return {
     currency,
-    initial: Number(p.initial ?? 0),
-    final: Number(p.final ?? 0),
-    discount_percent: Number(p.discount_percent ?? 0),
+    initial,
+    final,
+    discount_percent: discount,
   };
 }
 
@@ -107,11 +120,26 @@ function buildPricesCsv(appId: number, rows: SteamPriceRow[]): string {
 
 const BATCH_SIZE = 8;
 
-async function fetchAllCurrencyPrices(appId: number): Promise<{
-  rows: SteamPriceRow[];
-  csv: string;
-}> {
+const CC_ORDER = new Map(
+  STEAM_PRICE_FETCH_CCS.map((cc, index) => [cc, index]),
+);
+
+function preferCurrencyRow(existing: SteamPriceRow | undefined, cc: string): boolean {
+  if (!existing) return true;
+  const nextOrder = CC_ORDER.get(cc) ?? Number.MAX_SAFE_INTEGER;
+  const currentOrder = CC_ORDER.get(existing.cc) ?? Number.MAX_SAFE_INTEGER;
+  return nextOrder < currentOrder;
+}
+
+type AllCurrencyPrices =
+  | { ok: true; rows: SteamPriceRow[]; csv: string }
+  | { ok: false; status: 404 | 502; message: string };
+
+async function fetchAllCurrencyPrices(appId: number): Promise<AllCurrencyPrices> {
   const byCurrency = new Map<string, SteamPriceRow>();
+  let sawStoreListing = false;
+  let sawRequestError = false;
+  let lastError = "Steam did not return price data. Try again.";
 
   for (let i = 0; i < STEAM_PRICE_FETCH_CCS.length; i += BATCH_SIZE) {
     const batch = STEAM_PRICE_FETCH_CCS.slice(i, i + BATCH_SIZE);
@@ -125,31 +153,47 @@ async function fetchAllCurrencyPrices(appId: number): Promise<{
           });
           const unwrapped = unwrapAppDetails(raw, appId);
           if (!unwrapped.ok) return;
+          sawStoreListing = true;
           const parsed = parsePriceOverview(unwrapped.data);
           if (!parsed) return;
-          if (!byCurrency.has(parsed.currency)) {
-            const cur = parsed.currency;
-            byCurrency.set(cur, {
-              currency: cur,
-              initial: parsed.initial,
-              final: parsed.final,
-              initialFormatted: formatSteamPriceDecimal(cur, parsed.initial),
-              finalFormatted: formatSteamPriceDecimal(cur, parsed.final),
-              discount_percent: parsed.discount_percent,
-              cc,
-            });
-          }
-        } catch {
-          /* ignore per-region failures */
+          const cur = parsed.currency;
+          if (!preferCurrencyRow(byCurrency.get(cur), cc)) return;
+          byCurrency.set(cur, {
+            currency: cur,
+            initial: parsed.initial,
+            final: parsed.final,
+            initialFormatted: formatSteamPriceDecimal(cur, parsed.initial),
+            finalFormatted: formatSteamPriceDecimal(cur, parsed.final),
+            discount_percent: parsed.discount_percent,
+            cc,
+          });
+        } catch (e) {
+          sawRequestError = true;
+          if (e instanceof Error && e.message) lastError = e.message;
         }
       }),
     );
   }
 
+  if (!sawStoreListing) {
+    if (sawRequestError) {
+      return {
+        ok: false,
+        status: 502,
+        message: lastError,
+      };
+    }
+    return {
+      ok: false,
+      status: 404,
+      message: "App not found or not available on the Steam Store.",
+    };
+  }
+
   const rows = [...byCurrency.values()].sort((a, b) =>
     a.currency.localeCompare(b.currency),
   );
-  return { rows, csv: buildPricesCsv(appId, rows) };
+  return { ok: true, rows, csv: buildPricesCsv(appId, rows) };
 }
 
 /**
@@ -177,18 +221,16 @@ export async function POST(req: Request) {
   }
 
   if (b.allCurrencies === true) {
-    try {
-      const { rows, csv } = await fetchAllCurrencyPrices(appId);
-      return NextResponse.json({
-        appId,
-        allCurrencies: true,
-        rows,
-        csv,
-      });
-    } catch (e) {
-      const message = e instanceof Error ? e.message : "Fetch failed";
-      return NextResponse.json({ error: message }, { status: 502 });
+    const result = await fetchAllCurrencyPrices(appId);
+    if (!result.ok) {
+      return NextResponse.json({ error: result.message }, { status: result.status });
     }
+    return NextResponse.json({
+      appId,
+      allCurrencies: true,
+      rows: result.rows,
+      csv: result.csv,
+    });
   }
 
   const cc = parseCc(b.cc);
@@ -239,18 +281,16 @@ export async function GET(req: Request) {
     allFlag === "true" ||
     allFlag?.toLowerCase() === "yes"
   ) {
-    try {
-      const { rows, csv } = await fetchAllCurrencyPrices(appId);
-      return NextResponse.json({
-        appId,
-        allCurrencies: true,
-        rows,
-        csv,
-      });
-    } catch (e) {
-      const message = e instanceof Error ? e.message : "Fetch failed";
-      return NextResponse.json({ error: message }, { status: 502 });
+    const result = await fetchAllCurrencyPrices(appId);
+    if (!result.ok) {
+      return NextResponse.json({ error: result.message }, { status: result.status });
     }
+    return NextResponse.json({
+      appId,
+      allCurrencies: true,
+      rows: result.rows,
+      csv: result.csv,
+    });
   }
 
   const cc = parseCc(searchParams.get("cc"));

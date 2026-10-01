@@ -163,10 +163,13 @@ export default function SteamPricesPage() {
             <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
               price_overview.currency
             </code>
-            , and returns one row per currency. Prices are formatted as decimals
-            with comma thousands separators (e.g.{" "}
-            <span className="font-mono">1,234.56</span>); raw Steam minor units
-            are still in the JSON as{" "}
+            , and returns one row per currency. When several regions share a
+            currency, the earliest region in the fetch list is kept (so USD is
+            the US store price). Amounts are converted from Steam hundredths and
+            formatted with comma thousands separators (for example{" "}
+            <span className="font-mono">1,234.56</span>
+            ). Currencies Steam charges only in whole units, such as JPY, omit
+            decimals. Raw hundredths stay in the JSON as{" "}
             <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
               initial_minor
             </code>{" "}

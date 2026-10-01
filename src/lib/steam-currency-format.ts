@@ -1,47 +1,39 @@
 /**
- * Steam `price_overview.initial` / `final` are integer minor units for most
- * currencies (e.g. USD cents ÷ 100). Zero-fraction currencies (e.g. JPY) use
- * the integer as the whole amount.
+ * Steam `price_overview.initial` / `final` are integer hundredths for every
+ * live store currency (cents, sen, jeon, xu, and so on).
+ *
+ * Some currencies must be charged in whole major units (increments of at least
+ * 100 hundredths), so the store shows them without a fractional part.
  *
  * @see https://partner.steamgames.com/doc/store/pricing/currencies
  */
-const ZERO_FRACTION_DIGITS = new Set<string>([
-  "BIF",
+const WHOLE_UNIT_CURRENCIES = new Set<string>([
   "CLP",
-  "DJF",
-  "GNF",
-  "ISK",
-  "JPY",
-  "KMF",
-  "KRW",
-  "PYG",
-  "RWF",
-  "UGX",
-  "UYI",
-  "VND",
-  "VUV",
-  "XAF",
-  "XOF",
-  "XPF",
   "COP",
   "CRC",
   "IDR",
-  "HUF",
+  "INR",
+  "JPY",
+  "KRW",
+  "KZT",
+  "TWD",
+  "UAH",
+  "UYU",
+  "VND",
 ]);
 
 function fractionDigitsForCurrency(currency: string): number {
-  return ZERO_FRACTION_DIGITS.has(currency) ? 0 : 2;
+  return WHOLE_UNIT_CURRENCIES.has(currency) ? 0 : 2;
 }
 
-/** Convert Steam minor units to major units (e.g. cents → dollars). */
-export function steamMinorToMajor(currency: string, minor: number): number {
-  const fd = fractionDigitsForCurrency(currency);
-  if (fd === 0) return minor;
+/** Convert Steam hundredths to major units (e.g. cents → dollars, sen → yen). */
+export function steamMinorToMajor(_currency: string, minor: number): number {
   return minor / 100;
 }
 
 /**
- * Decimal string with "," thousands separators and "." as decimal point (en-US).
+ * Decimal string with "," thousands separators and "." as the decimal point.
+ * Whole-unit currencies omit the fractional part (e.g. JPY `1,200`).
  */
 export function formatSteamPriceDecimal(currency: string, minor: number): string {
   const major = steamMinorToMajor(currency, minor);
