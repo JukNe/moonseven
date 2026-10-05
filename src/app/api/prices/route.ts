@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { formatSteamPriceDecimal } from "@/lib/steam-currency-format";
 import { fetchAppDetailsPriceOverview } from "@/lib/steam-store";
-import { STEAM_PRICE_FETCH_CCS } from "@/lib/steam-price-regions";
+import {
+  STEAM_PRICE_FETCH_CCS,
+  steamPriceRowKey,
+} from "@/lib/steam-price-regions";
 
 export const maxDuration = 120;
 
@@ -156,14 +159,14 @@ async function fetchAllCurrencyPrices(appId: number): Promise<AllCurrencyPrices>
           sawStoreListing = true;
           const parsed = parsePriceOverview(unwrapped.data);
           if (!parsed) return;
-          const cur = parsed.currency;
+          const cur = steamPriceRowKey(parsed.currency, cc);
           if (!preferCurrencyRow(byCurrency.get(cur), cc)) return;
           byCurrency.set(cur, {
             currency: cur,
             initial: parsed.initial,
             final: parsed.final,
-            initialFormatted: formatSteamPriceDecimal(cur, parsed.initial),
-            finalFormatted: formatSteamPriceDecimal(cur, parsed.final),
+            initialFormatted: formatSteamPriceDecimal(parsed.currency, parsed.initial),
+            finalFormatted: formatSteamPriceDecimal(parsed.currency, parsed.final),
             discount_percent: parsed.discount_percent,
             cc,
           });

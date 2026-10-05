@@ -159,13 +159,14 @@ export default function SteamPricesPage() {
             <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
               /api/prices
             </code>
-            ). The server queries multiple storefront regions, merges by{" "}
-            <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-              price_overview.currency
-            </code>
-            , and returns one row per currency. When several regions share a
-            currency, the earliest region in the fetch list is kept (so USD is
-            the US store price). Amounts are converted from Steam hundredths and
+            ). The server queries multiple storefront regions and returns one row
+            per currency. USD prices are listed separately:{" "}
+            <span className="font-mono">USD</span> is the US store price, and{" "}
+            <span className="font-mono">USD_CIS</span>,{" "}
+            <span className="font-mono">USD_LATAM</span>,{" "}
+            <span className="font-mono">USD_MENA</span>, and{" "}
+            <span className="font-mono">USD_SASIA</span> are the regional USD
+            prices. Amounts are converted from Steam hundredths and
             formatted with comma thousands separators (for example{" "}
             <span className="font-mono">1,234.56</span>
             ). Currencies Steam charges only in whole units, such as JPY, omit
