@@ -3,15 +3,13 @@
 import { useCallback, useState } from "react";
 import Navbar from "@/app/components/Navbar";
 
-const APPDETAILS_EXAMPLE =
-  "https://store.steampowered.com/api/appdetails?appids=570&cc=us&filters=price_overview";
-
 type PriceRow = {
   currency: string;
   initial: number;
   final: number;
   initialFormatted: string;
   finalFormatted: string;
+  usd: string | null;
   discount_percent: number;
   cc: string;
 };
@@ -110,11 +108,13 @@ export default function SteamPricesPage() {
                 final,
                 initialFormatted,
                 finalFormatted,
+                usd,
                 discount_percent,
               }) => ({
                 currency,
                 initial: initialFormatted,
                 final: finalFormatted,
+                usd,
                 initial_minor: initial,
                 final_minor: final,
                 discount_percent,
@@ -145,41 +145,6 @@ export default function SteamPricesPage() {
           <h1 className="text-2xl font-bold tracking-tight text-black dark:text-zinc-50 sm:text-3xl">
             Steam Store Price
           </h1>
-          <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-base">
-            Fetches storefront prices via the public{" "}
-            <a
-              href={APPDETAILS_EXAMPLE}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-indigo-600 underline decoration-indigo-600/30 underline-offset-2 hover:text-indigo-500 dark:text-indigo-400 dark:decoration-indigo-400/30 dark:hover:text-indigo-300"
-            >
-              appdetails
-            </a>{" "}
-            endpoint (proxied by{" "}
-            <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-              /api/prices
-            </code>
-            ). The server queries multiple storefront regions and returns one row
-            per currency. USD prices are listed separately:{" "}
-            <span className="font-mono">USD</span> is the US store price, and{" "}
-            <span className="font-mono">USD_CIS</span>,{" "}
-            <span className="font-mono">USD_LATAM</span>,{" "}
-            <span className="font-mono">USD_MENA</span>, and{" "}
-            <span className="font-mono">USD_SASIA</span> are the regional USD
-            prices. Amounts are converted from Steam hundredths and
-            formatted with comma thousands separators (for example{" "}
-            <span className="font-mono">1,234.56</span>
-            ). Currencies Steam charges only in whole units, such as JPY, omit
-            decimals. Raw hundredths stay in the JSON as{" "}
-            <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-              initial_minor
-            </code>{" "}
-            /{" "}
-            <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-              final_minor
-            </code>
-            . Free titles may return no rows.
-          </p>
 
           <form
             className="mt-8 space-y-5 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8"
@@ -239,24 +204,6 @@ export default function SteamPricesPage() {
                   Download JSON
                 </button>
               </div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-500">
-                CSV columns:{" "}
-                <code className="rounded bg-zinc-200/80 px-1 py-0.5 dark:bg-zinc-800">
-                  appid,currency,initial,final,discount_percent
-                </code>{" "}
-                (<code className="rounded bg-zinc-200/80 px-1 py-0.5 dark:bg-zinc-800">
-                  initial
-                </code>{" "}
-                /{" "}
-                <code className="rounded bg-zinc-200/80 px-1 py-0.5 dark:bg-zinc-800">
-                  final
-                </code>{" "}
-                are decimal strings with comma grouping). JSON omits the sample
-                region code (<code className="rounded bg-zinc-200/80 px-1 py-0.5 dark:bg-zinc-800">
-                  cc
-                </code>
-                ).
-              </p>
               {result.rows.length > 0 ? (
                 <div className="overflow-x-auto rounded-md border border-zinc-200 dark:border-zinc-700">
                   <table className="w-full min-w-[32rem] text-left text-sm">
@@ -272,10 +219,13 @@ export default function SteamPricesPage() {
                           Final
                         </th>
                         <th className="px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300">
+                          Converted price (USD)
+                        </th>
+                        <th className="px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300">
                           Discount %
                         </th>
                         <th className="px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300">
-                          Region (cc)
+                          Region
                         </th>
                       </tr>
                     </thead>
@@ -295,6 +245,9 @@ export default function SteamPricesPage() {
                             {row.finalFormatted}
                           </td>
                           <td className="px-3 py-2 font-mono text-zinc-700 dark:text-zinc-300">
+                            {row.usd ?? "—"}
+                          </td>
+                          <td className="px-3 py-2 font-mono text-zinc-700 dark:text-zinc-300">
                             {row.discount_percent}
                           </td>
                           <td className="px-3 py-2 font-mono text-zinc-600 dark:text-zinc-400">
@@ -307,8 +260,7 @@ export default function SteamPricesPage() {
                 </div>
               ) : (
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  No paid price data for this app (often free-to-play or
-                  unpublished in these regions).
+                  No paid price data.
                 </p>
               )}
             </section>

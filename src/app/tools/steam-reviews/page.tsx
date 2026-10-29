@@ -16,8 +16,6 @@ type ApiOk = {
   csv: string;
 };
 
-const DOCS_URL = "https://partner.steamgames.com/doc/store/getreviews";
-
 export default function SteamReviewsPage() {
   const [appId, setAppId] = useState("");
   const [languages, setLanguages] = useState<string[]>(["english"]);
@@ -147,19 +145,6 @@ export default function SteamReviewsPage() {
         <h1 className="text-2xl font-bold tracking-tight text-black dark:text-zinc-50 sm:text-3xl">
           Steam Review Fetcher
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-base">
-          Fetches reviews via the Steam{" "}
-          <a
-            href={DOCS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-indigo-600 underline decoration-indigo-600/30 underline-offset-2 hover:text-indigo-500 dark:text-indigo-400 dark:decoration-indigo-400/30 dark:hover:text-indigo-300"
-          >
-            Get Reviews
-          </a>{" "}
-          API (server-side). Pick languages (merged when multiple), purchase
-          type, and optional advanced parameters.
-        </p>
 
         <form
           className="mt-8 space-y-5 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8"
@@ -219,7 +204,7 @@ export default function SteamReviewsPage() {
               <span className="inline-block text-zinc-500 transition-transform duration-200 group-open:rotate-90 dark:text-zinc-400">
                 ▸
               </span>
-              Advanced API parameters
+              Advanced
             </summary>
             <div className="space-y-4 border-t border-zinc-200 px-3 pb-4 pt-3 dark:border-zinc-700">
               <div>
@@ -227,7 +212,7 @@ export default function SteamReviewsPage() {
                   htmlFor="filter"
                   className="mb-1.5 block text-sm text-zinc-600 dark:text-zinc-400"
                 >
-                  Filter (sort / paging)
+                  Filter
                 </label>
                 <select
                   id="filter"
@@ -242,13 +227,6 @@ export default function SteamReviewsPage() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-500">
-                  Use <strong className="text-zinc-800 dark:text-zinc-300">recent</strong> or{" "}
-                  <strong className="text-zinc-800 dark:text-zinc-300">updated</strong> when walking
-                  all pages with cursors.{" "}
-                  <strong className="text-zinc-800 dark:text-zinc-300">all</strong> uses helpfulness
-                  and can use day range below.
-                </p>
               </div>
               <div>
                 <label
@@ -263,7 +241,7 @@ export default function SteamReviewsPage() {
                   type="number"
                   min={1}
                   max={365}
-                  placeholder="1–365 (only applies when filter is “all”)"
+                  placeholder="1–365"
                   value={dayRange}
                   onChange={(e) => setDayRange(e.target.value)}
                   className={inputClass}
@@ -295,7 +273,7 @@ export default function SteamReviewsPage() {
                   htmlFor="numPerPage"
                   className="mb-1.5 block text-sm text-zinc-600 dark:text-zinc-400"
                 >
-                  Reviews per page (num_per_page)
+                  Reviews per page
                 </label>
                 <input
                   id="numPerPage"
@@ -303,7 +281,7 @@ export default function SteamReviewsPage() {
                   type="number"
                   min={1}
                   max={100}
-                  placeholder="Default 100 (max 100)"
+                  placeholder="100"
                   value={numPerPage}
                   onChange={(e) => setNumPerPage(e.target.value)}
                   className={inputClass}
@@ -335,28 +313,24 @@ export default function SteamReviewsPage() {
                   htmlFor="startCursor"
                   className="mb-1.5 block text-sm text-zinc-600 dark:text-zinc-400"
                 >
-                  Start cursor (optional)
+                  Start cursor
                 </label>
                 <input
                   id="startCursor"
                   name="startCursor"
                   type="text"
-                  placeholder="First page: often * — or paste cursor from a prior response"
                   value={startCursor}
                   onChange={(e) => setStartCursor(e.target.value)}
                   autoComplete="off"
                   className={inputClass}
                 />
-                <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-500">
-                  Not used when multiple languages are selected.
-                </p>
               </div>
               <div>
                 <label
                   htmlFor="maxPages"
                   className="mb-1.5 block text-sm text-zinc-600 dark:text-zinc-400"
                 >
-                  Max pages (safety cap)
+                  Max pages
                 </label>
                 <input
                   id="maxPages"
@@ -364,7 +338,7 @@ export default function SteamReviewsPage() {
                   type="number"
                   min={1}
                   max={500}
-                  placeholder="500 (default)"
+                  placeholder="500"
                   value={maxPages}
                   onChange={(e) => setMaxPages(e.target.value)}
                   className={inputClass}
@@ -395,15 +369,14 @@ export default function SteamReviewsPage() {
                 Merged languages:{" "}
                 <strong className="text-zinc-900 dark:text-zinc-200">
                   {mergedFrom.join(", ")}
-                </strong>{" "}
-                (reviews deduped by ID)
+                </strong>
               </p>
             ) : null}
             {hasSummary ? (
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950">
                   <span className="block text-xs text-zinc-600 dark:text-zinc-400">
-                    Total reviews (filter)
+                    Total reviews
                   </span>
                   <span className="font-medium text-zinc-900 dark:text-zinc-100">
                     {String(summary?.total_reviews ?? "—")}
@@ -411,7 +384,7 @@ export default function SteamReviewsPage() {
                 </div>
                 <div className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950">
                   <span className="block text-xs text-zinc-600 dark:text-zinc-400">
-                    Score label
+                    Score
                   </span>
                   <span className="font-medium text-zinc-900 dark:text-zinc-100">
                     {String(summary?.review_score_desc ?? "—")}
@@ -462,7 +435,7 @@ export default function SteamReviewsPage() {
             <pre className="max-h-[min(24rem,50vh)] overflow-auto rounded-md border border-zinc-200 bg-zinc-50 p-4 text-xs leading-relaxed text-zinc-800 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-300">
               {JSON.stringify(result.data, null, 2).slice(0, 12000)}
               {JSON.stringify(result.data, null, 2).length > 12000
-                ? "\n… (truncated in preview)"
+                ? "\n…"
                 : ""}
             </pre>
           </section>

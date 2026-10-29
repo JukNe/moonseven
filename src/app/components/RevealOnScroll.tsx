@@ -31,12 +31,15 @@ export default function RevealOnScroll({
     const el = ref.current;
     if (!el) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
+    let frame = 0;
+    const show = () => {
+      frame = requestAnimationFrame(() => setVisible(true));
+    };
 
-    const show = () => setVisible(true);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      show();
+      return () => cancelAnimationFrame(frame);
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -63,7 +66,10 @@ export default function RevealOnScroll({
       observer.disconnect();
     }
 
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, []);
 
   const style: CSSProperties | undefined = visible

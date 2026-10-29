@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { formatSteamPriceDecimal } from "@/lib/steam-currency-format";
 import { fetchAppDetailsPriceOverview } from "@/lib/steam-store";
+import { fetchUsdRates, priceToUsd } from "@/lib/usd-rates";
 import {
   STEAM_PRICE_FETCH_CCS,
   steamPriceRowKey,
@@ -16,6 +17,8 @@ type SteamPriceRow = {
   /** Formatted decimals with "," thousands separators (en-US). */
   initialFormatted: string;
   finalFormatted: string;
+  /** Final price converted to USD. Null when no exchange rate is available. */
+  usd: string | null;
   discount_percent: number;
   cc: string;
 };
@@ -105,7 +108,7 @@ function escapeCsvCell(value: string): string {
 }
 
 function buildPricesCsv(appId: number, rows: SteamPriceRow[]): string {
-  const header = "appid,currency,initial,final,discount_percent";
+  const header = "appid,currency,initial,final,usd,discount_percent";
   const lines = [header];
   for (const r of rows) {
     lines.push(
@@ -114,6 +117,7 @@ function buildPricesCsv(appId: number, rows: SteamPriceRow[]): string {
         escapeCsvCell(r.currency),
         escapeCsvCell(r.initialFormatted),
         escapeCsvCell(r.finalFormatted),
+        escapeCsvCell(r.usd ?? ""),
         String(r.discount_percent),
       ].join(","),
     );
@@ -140,6 +144,7 @@ type AllCurrencyPrices =
 
 async function fetchAllCurrencyPrices(appId: number): Promise<AllCurrencyPrices> {
   const byCurrency = new Map<string, SteamPriceRow>();
+  const ratesPromise = fetchUsdRates();
   let sawStoreListing = false;
   let sawRequestError = false;
   let lastError = "Steam did not return price data. Try again.";
@@ -167,6 +172,7 @@ async function fetchAllCurrencyPrices(appId: number): Promise<AllCurrencyPrices>
             final: parsed.final,
             initialFormatted: formatSteamPriceDecimal(parsed.currency, parsed.initial),
             finalFormatted: formatSteamPriceDecimal(parsed.currency, parsed.final),
+            usd: null,
             discount_percent: parsed.discount_percent,
             cc,
           });
@@ -193,9 +199,13 @@ async function fetchAllCurrencyPrices(appId: number): Promise<AllCurrencyPrices>
     };
   }
 
-  const rows = [...byCurrency.values()].sort((a, b) =>
-    a.currency.localeCompare(b.currency),
-  );
+  const rates = await ratesPromise;
+  const rows = [...byCurrency.values()]
+    .sort((a, b) => a.currency.localeCompare(b.currency))
+    .map((row) => ({
+      ...row,
+      usd: priceToUsd(row.currency, row.final, rates),
+    }));
   return { ok: true, rows, csv: buildPricesCsv(appId, rows) };
 }
 

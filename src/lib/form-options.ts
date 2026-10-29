@@ -35,23 +35,14 @@ export const LANGUAGE_OPTIONS: { value: string; label: string }[] = [
 export const PURCHASE_TYPE_OPTIONS: { value: string; label: string }[] = [
   { value: "all", label: "All purchase types" },
   { value: "steam", label: "Purchased on Steam" },
-  { value: "non_steam_purchase", label: "Non-Steam purchase (e.g. retail key)" },
+  { value: "non_steam_purchase", label: "Non-Steam purchase" },
 ];
 
 /** `filter` — see Steam Get Reviews docs. */
 export const FILTER_OPTIONS: { value: string; label: string }[] = [
-  {
-    value: "recent",
-    label: "Recent (by creation time; best for paging cursors)",
-  },
-  {
-    value: "updated",
-    label: "Updated (by last update; best for paging cursors)",
-  },
-  {
-    value: "all",
-    label: "All / helpfulness (uses day range; default Steam sort)",
-  },
+  { value: "recent", label: "Recent" },
+  { value: "updated", label: "Updated" },
+  { value: "all", label: "All" },
 ];
 
 export const REVIEW_TYPE_OPTIONS: { value: string; label: string }[] = [
@@ -65,6 +56,6 @@ export const REVIEW_TYPE_OPTIONS: { value: string; label: string }[] = [
  * `0` = include off-topic / review-bomb-filtered reviews.
  */
 export const OFFTOPIC_FILTER_OPTIONS: { value: string; label: string }[] = [
-  { value: "default", label: "Default (exclude off-topic / review bombs)" },
-  { value: "include", label: "Include off-topic (pass 0)" },
+  { value: "default", label: "Exclude off-topic" },
+  { value: "include", label: "Include off-topic" },
 ];

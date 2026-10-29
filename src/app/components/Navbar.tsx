@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useDarkMode } from '../hooks/useDarkMode';
 import MoonIcon from './MoonIcon';
@@ -33,20 +35,20 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <a
+            <Link
               href="/"
               onClick={(e) => handleScroll(e, "home")}
               className="inline-flex cursor-pointer items-center"
               aria-label="Moon Seven home"
             >
-              <img
+              <Image
                 src="/Moon-Seven-Logo_nws.png"
                 alt=""
                 width={36}
                 height={36}
                 className="h-9 w-9 object-contain moon-bg"
               />
-            </a>
+            </Link>
           </div>
           
           {/* Desktop Menu */}

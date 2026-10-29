@@ -67,7 +67,8 @@ export async function getAllAppReviews(
     maxPages = 500,
     startCursor,
   } = options;
-  const { cursor: _discardCursor, ...userQuery } = userQueryRaw;
+  const userQuery = { ...userQueryRaw };
+  delete userQuery.cursor;
   const query: AppReviewsQueryParams = {
     num_per_page: 100,
     filter: "recent",

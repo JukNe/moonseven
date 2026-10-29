@@ -69,7 +69,7 @@ export default function ContactSection() {
       </RevealOnScroll>
       <RevealOnScroll delayMs={90}>
         <p className="mb-8 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-xl">
-          Get in touch with us. We'd love to hear from you!
+          Get in touch with us. We&apos;d love to hear from you!
         </p>
       </RevealOnScroll>
       <RevealOnScroll delayMs={140}>

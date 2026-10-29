@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
-export type LanguageOption = { value: string; label: string };
+type LanguageOption = { value: string; label: string };
 
 function toggleLanguage(
   current: string[],
@@ -128,10 +128,6 @@ export function LanguageMultiSelect({
               );
             })}
           </div>
-          <p className="border-t border-zinc-200 px-3 py-2 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-500">
-            &quot;All languages&quot; is exclusive. Otherwise pick any
-            combination; results are merged and deduped.
-          </p>
         </div>
       ) : null}
     </div>
