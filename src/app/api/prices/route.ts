@@ -17,7 +17,7 @@ type SteamPriceRow = {
   /** Formatted decimals with "," thousands separators (en-US). */
   initialFormatted: string;
   finalFormatted: string;
-  /** Final price converted to USD. Null when no exchange rate is available. */
+  /** Initial price converted to USD. Null when no exchange rate is available. */
   usd: string | null;
   discount_percent: number;
   cc: string;
@@ -204,7 +204,7 @@ async function fetchAllCurrencyPrices(appId: number): Promise<AllCurrencyPrices>
     .sort((a, b) => a.currency.localeCompare(b.currency))
     .map((row) => ({
       ...row,
-      usd: priceToUsd(row.currency, row.final, rates),
+      usd: priceToUsd(row.currency, row.initial, rates),
     }));
   return { ok: true, rows, csv: buildPricesCsv(appId, rows) };
 }

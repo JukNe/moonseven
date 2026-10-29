@@ -44,7 +44,7 @@ export async function fetchUsdRates(): Promise<UsdRates | null> {
   }
 }
 
-/** Final Steam price in USD. Regional USD rows are already dollars. */
+/** Initial Steam price in USD. Regional USD rows are already dollars. */
 export function priceToUsd(
   rowCurrency: string,
   minor: number,
