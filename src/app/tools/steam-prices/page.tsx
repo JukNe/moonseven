@@ -135,12 +135,12 @@ export default function SteamPricesPage() {
   }, [result, appId]);
 
   const inputClass =
-    "w-full rounded-md border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500";
+    "w-full rounded-md border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-500";
 
   return (
     <div className="min-h-screen scroll-smooth bg-zinc-50 font-sans dark:bg-black">
       <Navbar />
-      <main className="px-4 pb-12 pt-20 text-zinc-900 dark:text-zinc-100">
+      <main id="main" className="px-4 pb-12 pt-20 text-zinc-900 dark:text-zinc-100">
         <div className="mx-auto max-w-3xl">
           <h1 className="text-2xl font-bold tracking-tight text-black dark:text-zinc-50 sm:text-3xl">
             Steam Store Price
@@ -165,6 +165,7 @@ export default function SteamPricesPage() {
                 value={appId}
                 onChange={(e) => setAppId(e.target.value)}
                 autoComplete="off"
+                spellCheck={false}
                 className={inputClass}
               />
             </div>
@@ -172,12 +173,15 @@ export default function SteamPricesPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-indigo-600 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+              className="w-full rounded-md bg-indigo-600 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-zinc-900"
             >
               {loading ? "Fetching all currencies…" : "Fetch all currencies"}
             </button>
             {error ? (
-              <p className="text-center text-sm text-red-600 dark:text-red-400">
+              <p
+                aria-live="polite"
+                className="text-center text-sm text-red-600 dark:text-red-400"
+              >
                 {error}
               </p>
             ) : null}
@@ -206,7 +210,7 @@ export default function SteamPricesPage() {
               </div>
               {result.rows.length > 0 ? (
                 <div className="overflow-x-auto rounded-md border border-zinc-200 dark:border-zinc-700">
-                  <table className="w-full min-w-[32rem] text-left text-sm">
+                  <table className="w-full min-w-[32rem] text-left text-sm tabular-nums">
                     <thead className="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-950">
                       <tr>
                         <th className="px-3 py-2 font-medium text-zinc-700 dark:text-zinc-300">

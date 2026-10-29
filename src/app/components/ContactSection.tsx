@@ -100,7 +100,7 @@ export default function ContactSection() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-300 bg-white text-zinc-700 transition hover:border-indigo-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-100 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400 dark:focus:ring-offset-zinc-900"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-300 bg-white text-zinc-700 transition hover:border-indigo-400 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-100 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:border-indigo-500 dark:hover:text-indigo-400 dark:focus-visible:ring-offset-zinc-900"
                   aria-label={item.name}
                 >
                   {item.icon}

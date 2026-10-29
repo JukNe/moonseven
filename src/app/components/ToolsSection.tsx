@@ -21,14 +21,14 @@ export default function ToolsSection() {
             <RevealOnScroll delayMs={140}>
               <Link
                 href="/tools/steam-reviews"
-                className="group block rounded-lg border border-zinc-200 bg-zinc-50 p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/50"
+                className="group block rounded-lg border border-zinc-200 bg-zinc-50 p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/50"
               >
                 <h3 className="text-lg font-semibold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-50 dark:group-hover:text-indigo-400">
                   Steam Review Fetcher
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                   Download Steam store reviews for an app via the Get Reviews
-                  API—filter by language, purchase type, and more.
+                  API. Filter by language, purchase type, and more.
                 </p>
                 <span className="mt-4 inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400">
                   Open tool
@@ -46,7 +46,7 @@ export default function ToolsSection() {
             <RevealOnScroll delayMs={180}>
               <Link
                 href="/tools/steam-prices"
-                className="group block rounded-lg border border-zinc-200 bg-zinc-50 p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/50"
+                className="group block rounded-lg border border-zinc-200 bg-zinc-50 p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/50"
               >
                 <h3 className="text-lg font-semibold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-50 dark:group-hover:text-indigo-400">
                   Steam Store Price

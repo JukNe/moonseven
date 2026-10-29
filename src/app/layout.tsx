@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     default: "Moon Seven",
     template: "%s · Moon Seven",
   },
-  description: "Coming soon... 🌒",
+  description: "Coming soon… 🌒",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
     siteName: "Moon Seven",
     title: "Moon Seven",
-    description: "Coming soon... 🌒",
+    description: "Coming soon… 🌒",
     images: [
       {
         url: "/Moon-Seven-Logo_nws.png",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Moon Seven",
-    description: "Coming soon... 🌒",
+    description: "Coming soon… 🌒",
     images: ["/Moon-Seven-Logo_nws.png"],
   },
 };
@@ -54,6 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
+        <meta name="theme-color" content="#fafafa" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -62,11 +63,9 @@ export default function RootLayout({
                   const stored = localStorage.getItem('darkMode');
                   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                   const shouldBeDark = stored !== null ? stored === 'true' : prefersDark;
-                  if (shouldBeDark) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
+                  document.documentElement.classList.toggle('dark', shouldBeDark);
+                  const meta = document.querySelector('meta[name="theme-color"]');
+                  if (meta) meta.setAttribute('content', shouldBeDark ? '#0a0a0a' : '#fafafa');
                 } catch (e) {}
               })();
             `,
@@ -76,6 +75,12 @@ export default function RootLayout({
       <body
         className={`${lunasima.variable} ${geistMono.variable} font-sans antialiased`}
       >
+        <a
+          href="#main"
+          className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:left-4 focus-visible:top-4 focus-visible:z-[60] focus-visible:rounded-md focus-visible:bg-white focus-visible:px-3 focus-visible:py-2 focus-visible:text-sm focus-visible:font-medium focus-visible:text-black focus-visible:ring-2 focus-visible:ring-indigo-500"
+        >
+          Skip to content
+        </a>
         <SmoothSectionScroll />
         {children}
       </body>

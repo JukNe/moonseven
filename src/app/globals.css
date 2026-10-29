@@ -4,6 +4,7 @@
 
 /* Light Mode Color Scheme */
 :root {
+  color-scheme: light;
   /* Base Colors */
   --background: #fafafa;
   --foreground: #1a1a1a;
@@ -39,6 +40,7 @@
 
 /* Dark Mode Color Scheme */
 .dark {
+  color-scheme: dark;
   /* Base Colors */
   --background: #0a0a0a;
   --foreground: #fafafa;
@@ -95,11 +97,26 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  touch-action: manipulation;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+section[id] {
+  scroll-margin-top: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.scroll-smooth,
+  html.home-smooth-sections {
+    scroll-behavior: auto;
+  }
 }
 
 /* Home page: smooth wheel/nav jumps; section tops align to viewport (padding inside Section clears navbar). */

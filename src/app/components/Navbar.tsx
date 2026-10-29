@@ -46,6 +46,7 @@ export default function Navbar() {
                 alt=""
                 width={36}
                 height={36}
+                priority
                 className="h-9 w-9 object-contain moon-bg"
               />
             </Link>
@@ -70,7 +71,7 @@ export default function Navbar() {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
-              className="ml-4 p-2 rounded-md text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500 transition-colors"
+              className="ml-4 p-2 rounded-md text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-zinc-500 transition-colors"
               aria-label="Toggle dark mode"
             >
               <MoonIcon />
@@ -81,17 +82,17 @@ export default function Navbar() {
           <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-md text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500 transition-colors"
+              className="p-2 rounded-md text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-zinc-500 transition-colors"
               aria-label="Toggle dark mode"
             >
               <MoonIcon />
             </button>
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500 transition-transform duration-200"
+              className="inline-flex items-center justify-center p-2 rounded-md text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-50 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-zinc-500 transition-transform duration-200"
               aria-expanded={isMenuOpen}
             >
-              <span className="sr-only">Open main menu</span>
+              <span className="sr-only">{isMenuOpen ? "Close main menu" : "Open main menu"}</span>
               {!isMenuOpen ? (
                 <svg
                   className="block h-6 w-6"
@@ -122,7 +123,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div 
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
           isMenuOpen ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
@@ -137,7 +138,7 @@ export default function Navbar() {
               key={item.href}
               href={item.href}
               onClick={(e) => handleScroll(e, item.scrollId)}
-              className={`block px-3 py-2 text-base font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-all duration-200 ${
+              className={`block px-3 py-2 text-base font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-[transform,opacity] duration-200 ${
                 isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
               }`}
               style={{ transitionDelay: isMenuOpen ? item.delay : '0s' }}
